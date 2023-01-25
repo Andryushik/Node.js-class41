@@ -72,7 +72,6 @@ function addMovie(req, res) {
   console.log(newMovie);
   moviesData.push(newMovie);
   try {
-    res.setHeader('Content-Type', 'application/json');
     res.status(201);
     res.send(`New movie added in Database with id:${id}`);
   } catch (error) {
@@ -82,18 +81,16 @@ function addMovie(req, res) {
 
 function deleteMovie(req, res) {
   const id = req.params.id;
+  const movieToDelete = moviesData.find((movie) => movie.id === id);
   try {
-    for (let movie of moviesData) {
-      if (movie.id === id) {
-        console.log('found');
-        moviesData = moviesData.filter((movie) => movie.id !== id);
-        res.status(200);
-        res.send('Movie is deleted.');
-        return;
-      }
+    if (!movieToDelete) {
       res.status(404);
       res.send(`Movie with id:${id} not found!`);
+      return;
     }
+    moviesData.splice(moviesData.indexOf(movieToDelete), 1);
+    res.status(200);
+    res.send('Movie is deleted.');
   } catch (error) {
     console.error(error);
   }
