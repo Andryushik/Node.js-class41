@@ -12,7 +12,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/weather', (req, res) => {
-  const { cityName } = req.body;
+  const cityName = ({ city } = req.body);
+  console.log(cityName);
   res.status(200);
   res.send(cityName);
 });
