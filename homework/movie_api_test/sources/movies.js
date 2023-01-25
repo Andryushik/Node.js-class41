@@ -1,4 +1,4 @@
-export const moviesArr = [
+export const moviesData = [
   {
     id: '13lgu6xzldbj2een',
     Title: 'Avatar',
