@@ -62,14 +62,13 @@ function addMovie(req, res) {
     return;
   }
   const id = uniqid();
-  console.log(req.body);
   const newMovie = {
     id,
     title,
     released,
     director,
   };
-  console.log(newMovie);
+
   moviesData.push(newMovie);
   try {
     res.status(201);
