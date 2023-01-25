@@ -12,7 +12,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/weather', (req, res) => {
-  const cityName = ({ city } = req.body);
+  const { city } = req.body;
+  if (!city) {
+    res.status(400);
+    res.send('Please do not forget to provide city name.');
+    return;
+  }
+  const cityName = city;
   console.log(cityName);
   res.status(200);
   res.send(cityName);
