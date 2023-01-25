@@ -1,8 +1,4 @@
 import express from 'express';
-//import exphbs from 'express-handlebars';
-
-/*eslint no-undef: "error"*/
-/*eslint-env node*/
 
 const app = express();
 
@@ -16,8 +12,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/weather', (req, res) => {
-  const cityName = req.body.city;
-  console.log(cityName);
+  const { cityName } = req.body;
+  res.status(200);
   res.send(cityName);
 });
 
