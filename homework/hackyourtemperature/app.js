@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 
 app.post('/weather', async (req, res) => {
   const cityName = req.body.city;
-  console.log('Client requested weather in ', req.body.city);
+  console.log('Client requested weather in ', cityName);
   try {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${keys.API_KEY}&units=metric`,
