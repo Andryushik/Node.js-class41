@@ -3,16 +3,9 @@ import uniqid from 'uniqid';
 import { moviesData } from './sources/movies.js';
 
 const app = express();
-const id = uniqid();
-console.log(id);
-console.log(moviesData);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.get('/', (req, res) => {
-  res.send('Server is working');
-});
 
 app.get('/movies', (req, res) => {
   getMoviesList(req, res);
@@ -20,6 +13,13 @@ app.get('/movies', (req, res) => {
 
 app.get('/movies/:id', (req, res) => {
   getMovie(req, res);
+});
+
+app.post('/movies', (req, res) => {
+  addMovie(req, res);
+});
+app.delete('/movies/:id', (req, res) => {
+  deleteMovie(req, res);
 });
 
 function getMoviesList(req, res) {
@@ -34,7 +34,7 @@ function getMoviesList(req, res) {
   }
 }
 
-async function getMovie(req, res) {
+function getMovie(req, res) {
   const id = req.params.id;
   try {
     for (let movie of moviesData) {
@@ -52,19 +52,51 @@ async function getMovie(req, res) {
   }
 }
 
-app.post('/movies', (req, res) => {
+function addMovie(req, res) {
+  const { title, released, director } = req.body;
+  if (!title || !released || !director) {
+    res.status(400);
+    res.send(
+      'Cannot add this movie! Please provide ALL fields: title, released, director, in your request.',
+    );
+    return;
+  }
+  const id = uniqid();
+  console.log(req.body);
+  const newMovie = {
+    id,
+    title,
+    released,
+    director,
+  };
+  console.log(newMovie);
+  moviesData.push(newMovie);
   try {
-    res.send();
+    res.setHeader('Content-Type', 'application/json');
+    res.status(201);
+    res.send(`New movie added in Database with id:${id}`);
   } catch (error) {
     console.error(error);
   }
-});
-app.delete('/movies/:id', (req, res) => {
+}
+
+function deleteMovie(req, res) {
+  const id = req.params.id;
   try {
-    res.send();
+    for (let movie of moviesData) {
+      if (movie.id === id) {
+        console.log('found');
+        moviesData = moviesData.filter((movie) => movie.id !== id);
+        res.status(200);
+        res.send('Movie is deleted.');
+        return;
+      }
+      res.status(404);
+      res.send(`Movie with id:${id} not found!`);
+    }
   } catch (error) {
     console.error(error);
   }
-});
+}
 
 export default app;
