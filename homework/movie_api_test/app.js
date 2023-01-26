@@ -45,10 +45,10 @@ function getMovie(req, res) {
         return;
       }
     }
-    res.status(404);
-    res.send(`Movie with id:${id} not found!`);
+    throw new Error(`Movie with id:${id} not found!`);
   } catch (error) {
     console.error(error);
+    res.status(404).send(error.message);
   }
 }
 
