@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 app.post('/weather', async (req, res) => {
   const cityName = req.body.city;
   console.log('Client requested weather in ', cityName);
+
   try {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${keys.API_KEY}&units=metric`,
@@ -25,7 +26,6 @@ app.post('/weather', async (req, res) => {
       console.log(
         `Response sended: current temperature in ${cityName} is ${currentTemp}°C`,
       );
-      //res.setHeader('Content-Type', 'application/json'); // need or not???
       res.status(200).send({
         weatherText: `current temperature in ${cityName} is ${currentTemp}°C`,
       });
@@ -35,6 +35,7 @@ app.post('/weather', async (req, res) => {
     }
   } catch (error) {
     console.error(error);
+    res.status(500).send({ weatherText: 'Something went wrong...' });
   }
 });
 
